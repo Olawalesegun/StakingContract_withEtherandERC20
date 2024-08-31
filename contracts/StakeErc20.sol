@@ -35,10 +35,12 @@ contract StakeERC20 {
     event stakingSuccessful(address who, uint256 _duration, uint256 amount);
     event withdrawSuccessful(string status);
 
-    function stakeErc20(uint256 _amount, uint256 _duration) payable  public{
+    function stakeErc20(uint256 _duration) payable  public{
         if(msg.sender == address(0)) {
             revert AddressZeroDetected();
         }
+
+        uint256 _amount = msg.value;
     
         if(_amount <= 0) {
             revert NotSufficientAMountToStake();
