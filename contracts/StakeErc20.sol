@@ -32,6 +32,9 @@ contract StakeERC20 {
     error NoStakeFound();
     error StakeNotMatured();
 
+    event stakingSuccessful(address who, uint256 _duration, uint256 amount);
+    event withdrawSuccessful(string status);
+
     function stakeErc20(uint256 _amount, uint256 _duration) payable  public{
         if(msg.sender == address(0)) {
             revert AddressZeroDetected();
@@ -59,6 +62,8 @@ contract StakeERC20 {
             beginningOfStakedDate: block.timestamp,
             endOfStakeDate: block.timestamp + _duration * 1 days
         });
+
+        emit stakingSuccessful(msg.sender, _duration, _amount);
     }
 
 
@@ -107,5 +112,6 @@ contract StakeERC20 {
         userStake.endOfStakeDate = 0;
 
         IERC20(tokenAddress).transfer(msg.sender, totalAmount);
+        emit withdrawSuccessful("Withdraw is Successful");
     }
 }
